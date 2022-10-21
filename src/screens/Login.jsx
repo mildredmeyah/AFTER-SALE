@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, SafeAreaView  } from 'react-native';
 import Header from '../components/Header';
 
 import { auth } from '../config/firebase';
@@ -51,29 +50,29 @@ const Login = ({navigation}) => {
 
 
   return (
+    <View style={{backgroundColor:'white',height:1000,}} >
     <View style={styles.container}>
-        <Header title='Login' />
+         <Header title='Login' />
         <View>
-            {errMsg === '' ? (<Text style={styles.goodErr}>Good to go</Text>) : (<Text style={styles.badErr}>{errMsg}</Text>)}
+            {errMsg === '' ? (<Text style={styles.goodErr}></Text>) : (<Text style={styles.badErr}>{errMsg}</Text>)}
         </View>
         <View>
             <View>
-                <Text>Email</Text>
-                <TextInput onChangeText={value => setEmail(value)} />
+                <TextInput  onChangeText={value => setEmail(value)} style={styles.input}  placeholder='Email' />
             </View>
-
             <View>
-                <Text>Password:</Text>
-                <TextInput onChangeText={value => setPassword(value)} />
+                <TextInput onChangeText={value => setPassword(value)} style={styles.input}  placeholder='Password' secureTextEntry />
             </View>
-
-            <TouchableOpacity style={{color: 'black',}} title='Login' onPress={loginWithEmail}>Login</TouchableOpacity>
-            <View>
-                <Text>Don't have an account?</Text>
-                <Button title='Register' onPress={() => navigation.navigate('Register')} />
+            <View style={styles.lgn}>
+            <TouchableOpacity style={styles.btn} color="#96DED1"  onPress={loginWithEmail}>
+                <Text style={{color:'white'}}>Login</Text>
+            </TouchableOpacity>
             </View>
-
+            <View style={styles.acc} >
+                <Text  style={styles.reg}  color="#96DED1" title='Register' onPress={() => navigation.navigate('Register')} >Not registered <Text style={styles.ed} >register</Text></Text>
+            </View>
         </View>
+    </View>
     </View>
   )
 }
@@ -81,14 +80,68 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         padding: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 100,
+        marginLeft: 50,
+        backgroundColor: "#DFF1F3",
+        height: 500,
+        width: 300,
+        borderRadius: 20,
     },
     badErr: {
-        backgroundColor: '#ff0000',
-        color: '#ffffff',
+        backgroundColor: '#FF0000',
+        color: '#FFFFFF',
     },
     goodErr: {
-        backgroundColor: '#00ff00',
-        color: '#ffffff',
+        backgroundColor: '#00FF00',
+        color: '#FFFFFF',
+    },
+    input:{
+        borderWidth:  1,
+        backgroundColor: '#fff',
+        marginTop: 20,
+        width:200,
+        borderColor:'#96DED1',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        borderRadius: 10,
+        color:'#A09999',
+        paddingLeft: 20
+    },
+    acc:{
+        marginTop: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    lgn:{
+        marginTop: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    reg:{
+    },
+    fog:{
+        color:'#36EBCA',
+        marginTop: 20,
+        textDecorationLine: 'underline',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    btn:{
+        borderRadius:35,
+        borderRadius: 10,
+        width:189,
+        height:46,
+        color:'white',
+        backgroundColor:'#96DED1',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    ed:{
+        color:'#36EBCA',
+        textDecorationLine: 'underline',
     },
 })
 

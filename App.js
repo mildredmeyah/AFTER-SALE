@@ -20,7 +20,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   //function to register new user with email and password
   //function to login user with email and password
-  //function to log out the user
+  //function to log out the user  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Login'>
@@ -36,12 +36,12 @@ export default function App() {
           {(props) => <ViewProducts {...props} />}
         </Stack.Screen>
 
-        <Stack.Screen name='AddProduct' options={{headerShown: false}}>
+        <Stack.Screen name='AddProduct' options={{headerShown: true}}>
           {(props) => <AddProduct {...props} />}
         </Stack.Screen>
 
         <Stack.Screen name='Home' options={{title:'Home'}}>
-          {(props) => <Home {...props} />}
+          {(props) => <Dashboard {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

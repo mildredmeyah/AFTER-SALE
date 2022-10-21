@@ -1,82 +1,177 @@
-import React, {useState} from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { auth, db } from '../config/firebase';
+import { collection, addDoc } from "firebase/firestore";
 
-const AddProduct = ({addProduct}) => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [cost, setCost] = useState(0);
-    const [price, setPrice] = useState(0);
-    const [quantity, setQuantity] = useState(0);
 
-    const add = () => {
-        //check if fields are empty
-        if (name === '') {
-            //bad
-            alert('Product name is required to add product')
+
+const AddProduct = () => {
+    const navigation = useNavigation()
+    const [productName, setProductName] = useState('');
+    const [productDesc, setProductDesc] = useState('')
+    const [quantity, setQuantity] = useState('');
+    const [costPerBulk, setCostPerBulk] = useState('');
+    const [percentage, setPercentage] = useState('');
+    const [email] = useState(auth.currentUser.email);
+
+    const addProduct = () => {
+        if(productName === '') {
+            alert("Please insert a product name");
+            //don't allow
         } else {
-            if (description === '') {
-                //bad
-                alert('Product Description is required to add product')
+            if(quantity === '') {
+                //don't allow
             } else {
-                if (cost === '' || cost <= 0) {
-                    //bad
-                    alert('Product cost is required to add product')
+                if(costPerBulk === '' || costPerBulk < 1) {
+                    alert("Please insert a Selling price of more than 1");
+                    //don't allow
                 } else {
-                    if (price === '' || price <= 0) {
-                        //bad
-                        alert('Product price is required to add product')
+                    if(quantity === '' || quantity < 1) {
+                        alert("Please insert a quantity of 1 or more");
+                        //don't allow
+                    } else if(percentage === '') {
+                        alert("Please insert a percentage");
+                        //don't allow
                     } else {
-                        if (quantity === '' || quantity <= 0) {
-                            //bad
-                            alert('Product quantity is required to add product')
-                        }  else {
-                            //good
-                            if (addProduct(name, description, Number(cost), Number(price), Number(quantity))) {
-                                clearFields();
-                            }
-                        }
+                        const collectionRef=collection(db,"productss");
+
+                        const Products={
+                            productName:productName,
+                            costPerBulk:costPerBulk,
+                            quantity:quantity,
+                            percentage:percentage,
+                            email: email,
+                        };
+
+                        addDoc(collectionRef, Products).then(()=>{
+                            alert("Added transaction successfully");
+                            ClearAll();
+                            navigation.navigate('Home')
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
                     }
                 }
             }
         }
     }
 
-    const clearFields = () => {
-        setName('');
-        setDescription('');
-        setCost(0);
-        setPrice(0);
-        setQuantity(0);
-    }
-  return (
-    <View>
-        <View>
-            <Text>Name</Text>
-            <TextInput onChangeText={value => setName(value)} value={name}  />
+    return (
+        <View style={styles.container}>
+            <View>
+                <TextInput style={styles.TextInput}
+                placeholder= "Enter product name"
+                value={productName}
+                onChangeText={(Text) => setProductName(Text)}
+                autoCapitalize= "none"
+                autoCorrect={false} />
+                <TextInput style={{
+                    height: 90,
+                    width: 200,
+                    margin: 12,
+                    fontSize: 11,
+                    borderBottomWidth: 1,
+                    borderColor: '#96DED1',
+                    color: '#A09999',
+                    backgroundColor: '#fff',
+                    paddingHorizontal: 10,
+                    marginBottom: 10,
+                    textAlign: 'left',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                }}
+                placeholder= "Enter product description"
+                value={productDesc}
+                onChangeText={(Text) => setProductDesc(Text)}
+                autoCapitalize= "none"
+                autoCorrect={false} />
+                <TextInput style={styles.TextInput}
+                placeholder= "Quantity"
+                value={quantity}
+                onChangeText={(Text) => setQuantity(Text)}
+                autoCapitalize= "none"
+                autoCorrect={false}
+                secureTextEntry={true} />
+                <TextInput style={styles.TextInput}
+                placeholder= "Enter cost per bulk"
+                value={costPerBulk}
+                onChangeText={(Text) => setCostPerBulk(Text)}
+                autoCapitalize= "none"
+                autoCorrect={false} />
+                <Text style={{marginLeft: 14}}>Enter % you want to earn</Text>
+                <TextInput style={styles.TextInput}
+                placeholder= "Percentage"
+                value={[percentage]}
+                onChangeText={(Text) => setPercentage(Text)}
+                autoCapitalize= "none"
+                autoCorrect={false} />
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginBottom: 10, marginTop: 10}}>
+            <TouchableOpacity
+                onPress={addProduct}
+                style={styles.button}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: '#4F4F4F'}}>Capture Product</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => { navigation.navigate('Home')}}
+                style={styles.buttonClear}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fff'}}>Clear Inputs</Text>
+            </TouchableOpacity>
+            </View>
         </View>
-
-        <View>
-            <Text>Description</Text>
-            <TextInput onChangeText={value => setDescription(value)} value={description} />
-        </View>
-
-        <View>
-            <Text>Cost (Bulk)</Text>
-            <TextInput onChangeText={value => setCost(value)} value={cost} />
-        </View>
-
-        <View>
-            <Text>Price (single)</Text>
-            <TextInput onChangeText={value => setPrice(value)} value={price} />
-        </View>
-
-        <View>
-            <Text>Quantity</Text>
-            <TextInput onChangeText={value => setQuantity(value)} value={quantity} />
-        </View>
-        <Button title='Add Product' onPress={add} />
-    </View>
-  )
+    );
 }
-
 export default AddProduct
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        height: 580,
+        width: 340,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 140,
+        marginBottom: 150,
+        alignSelf: 'center',
+        backgroundColor: '#DFF1F3',
+        borderRadius: 20,
+    },
+    TextInput: {
+        width: 200,
+        height: 30,
+        margin: 12,
+        fontSize: 11,
+        borderBottomWidth: 1,
+        borderColor: '#96DED1',
+        color: '#A09999',
+        backgroundColor: '#fff',
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        textAlign: 'left',
+        borderWidth: 1,
+        borderRadius: 4,
+    },
+    button: {
+        marginTop: 5,
+        height: 45,
+        width: 100,
+        backgroundColor: '#96DED1',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        borderRadius: 10,
+    },
+    buttonClear: {
+      marginTop: 5,
+      marginLeft: 10,
+      height: 45,
+      width: 80,
+      backgroundColor: '#CAC9C9',
+      alignItems: 'center',
+      textAlign: 'center',
+      justifyContent: 'center',
+      fontWeight: 'bold',
+      borderRadius: 10,
+    },
+})
