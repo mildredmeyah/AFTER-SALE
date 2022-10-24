@@ -13,6 +13,7 @@ import { useState } from 'react';
 import AddProduct from './src/components/AddProduct';
 import ViewProducts from './src/pages/ViewProducts';
 import Home from './src/pages/Home';
+import UpdateProduct from './src/components/UpdateProduct';
 
 
 const Stack = createNativeStackNavigator();
@@ -42,6 +43,10 @@ export default function App() {
 
         <Stack.Screen name='Home' options={{title:'Home'}}>
           {(props) => <Dashboard {...props} />}
+        </Stack.Screen>
+
+        <Stack.Screen name='Update' options={{headerShown: true}}>
+          {(props) => <UpdateProduct {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

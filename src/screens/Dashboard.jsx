@@ -7,7 +7,6 @@ import img2 from '../../assets/pictures/bananas.webp';
 import { Feather } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
 import AddProduct from '../components/AddProduct';
-import ViewAll from '../components/view';
 import { auth, db } from '../config/firebase';
 import { getDocs, doc, collection, query, where, deleteDoc } from 'firebase/firestore';
 // import RoundBtn from './antButton';

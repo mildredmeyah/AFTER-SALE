@@ -10,12 +10,36 @@ const AddProduct = () => {
     const navigation = useNavigation()
     const [productName, setProductName] = useState('');
     const [productDesc, setProductDesc] = useState('')
-    const [quantity, setQuantity] = useState('');
-    const [costPerBulk, setCostPerBulk] = useState('');
-    const [percentage, setPercentage] = useState('');
+    const [quantity, setQuantity] = useState(0);
+    const [costPerBulk, setCostPerBulk] = useState(0);
+    const [percentage, setPercentage] = useState(0);
     const [email] = useState(auth.currentUser.email);
+    // const [sellingPrice,setSellingPrice] = useState(0);
+    // const [targetProfit, setTargetProfit] = useState(0);
+    // const [profitProduct, setProfitProduct] = useState(0);
 
-    const addProduct = () => {
+    var sellingPrice =0
+    var targetProfit =0
+    var profitProduct =0
+
+    const calcSellingPrice = (percentage,costPerBulk,quantity) => {
+    
+        let profit = costPerBulk * (percentage/100)
+        console.log(profit);
+        let totalIncome = (parseInt(costPerBulk) +parseInt( profit));
+        console.log(totalIncome);
+        
+         let sellPrice = (totalIncome/quantity);
+        console.log(sellPrice);
+
+        let profitPerProduct = profit / quantity;
+        console.log(profitPerProduct);
+            sellingPrice =sellPrice
+     targetProfit =profit
+     profitProduct =profitPerProduct
+    }  
+
+    const addProduct = async() => {
         if(productName === '') {
             alert("Please insert a product name");
             //don't allow
@@ -34,16 +58,21 @@ const AddProduct = () => {
                         alert("Please insert a percentage");
                         //don't allow
                     } else {
+                       await calcSellingPrice(percentage,costPerBulk,quantity);
                         const collectionRef=collection(db,"productss");
 
                         const Products={
                             productName:productName,
                             costPerBulk:costPerBulk,
-                            quantity:quantity,
-                            percentage:percentage,
+                            quantity: quantity,
+                            sellingPrice: sellingPrice,
+                            bulkProfit: targetProfit,
+                            productProfit: profitProduct,
                             email: email,
+                            profitEarned:0
                         };
 
+                       
                         addDoc(collectionRef, Products).then(()=>{
                             alert("Added transaction successfully");
                             ClearAll();
@@ -89,21 +118,22 @@ const AddProduct = () => {
                 <TextInput style={styles.TextInput}
                 placeholder= "Quantity"
                 value={quantity}
-                onChangeText={(Text) => setQuantity(Text)}
+                onChangeText={(Number) => setQuantity(Number)}
                 autoCapitalize= "none"
+                
                 autoCorrect={false}
-                secureTextEntry={true} />
+                />
                 <TextInput style={styles.TextInput}
                 placeholder= "Enter cost per bulk"
                 value={costPerBulk}
-                onChangeText={(Text) => setCostPerBulk(Text)}
+                onChangeText={(Number) => setCostPerBulk(Number)}
                 autoCapitalize= "none"
                 autoCorrect={false} />
                 <Text style={{marginLeft: 14}}>Enter % you want to earn</Text>
                 <TextInput style={styles.TextInput}
                 placeholder= "Percentage"
                 value={[percentage]}
-                onChangeText={(Text) => setPercentage(Text)}
+                onChangeText={(Number) => setPercentage(Number)}
                 autoCapitalize= "none"
                 autoCorrect={false} />
             </View>

@@ -43,7 +43,7 @@ const ViewProduct = ({route, navigation }) => {
             <View style={{flex: 1,height: 72, width: 321}}>
             <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
-                onPress={() => { navigation.navigate('AddProduct')}}
+                onPress={() => { navigation.navigate('Update',{selectedProd:selectedProd})}}
                 style={styles.buttonEdit}>
                 <Text style={{fontWeight: 'bold', fontSize: 16, color: '#4F4F4F'}}>Edit Product</Text>
             </TouchableOpacity>
