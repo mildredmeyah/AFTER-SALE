@@ -85,6 +85,8 @@ const ViewAll = ({ navigation }) => {
   );
 
   useEffect(()=>{
+    // auth.currentUser.email
+    console.log(auth.currentUser.email);
     getProducts();
   },[])
 

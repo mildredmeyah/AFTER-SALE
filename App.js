@@ -32,7 +32,7 @@ export default function App() {
           {(props) => <Register {...props} />}
         </Stack.Screen>
 
-        <Stack.Screen name='viewProduct' options={{headerShown: false}}>
+        <Stack.Screen name='viewProduct' options={{headerShown: true}}>
           {(props) => <ViewProducts {...props} />}
         </Stack.Screen>
 

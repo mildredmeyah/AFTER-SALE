@@ -10,8 +10,8 @@ const Login = ({navigation}) => {
 
     //states
     //login states
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('paul@paul.com');
+    const [password, setPassword] = useState('pppppp');
 
     //error state
     const [errMsg, setErrMsg] = useState('');
@@ -58,10 +58,10 @@ const Login = ({navigation}) => {
         </View>
         <View>
             <View>
-                <TextInput  onChangeText={value => setEmail(value)} style={styles.input}  placeholder='Email' />
+                <TextInput  onChangeText={value => setEmail(value)} value={email} style={styles.input}  placeholder='Email' />
             </View>
             <View>
-                <TextInput onChangeText={value => setPassword(value)} style={styles.input}  placeholder='Password' secureTextEntry />
+                <TextInput onChangeText={value => setPassword(value)} value={password} style={styles.input}  placeholder='Password' secureTextEntry />
             </View>
             <View style={styles.lgn}>
             <TouchableOpacity style={styles.btn} color="#96DED1"  onPress={loginWithEmail}>
