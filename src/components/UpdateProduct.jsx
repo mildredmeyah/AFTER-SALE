@@ -3,52 +3,54 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { auth, db } from '../config/firebase';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { async } from "@firebase/util";
 
 // create a component
 const UpdateProduct = ({route, navigation }) => {
     const { selectedProd } = route.params;
 
-//   useEffect(()=>{
-//     console.log( selectedProd);
-//   },[])
-    //const navigation = useNavigation()
+  useEffect(()=>{
+    console.log( selectedProd);
+  },[])
+    // const navigation = useNavigation()
     const [updateQuantity, setUpdateQuantity] = useState(0);
 
     //let profit = product.profitEarned
 
-    const calcSellingPrice = () => {
+    const calProfitEarned =async () => {
     
-        let update = selectedProd.quantity - updateQuantity;
-
-        selectedProd.quantity = update;
-
-        selectedProd.profitEarned = selectedProd.profitEarned + (updateQuantity * selectedProd.productProfit);
-    } 
-    
-    const addProduct = () => {
+      
         if(updateQuantity === '' || updateQuantity < 0) {
             alert("Please insert a product name");
-            //don't allow
-        } else {
-            calcSellingPrice();
-             const collectionRef=collection(db,"productss");
 
-             const Products={
-                 quantity: update,
-                 profitEarned:selectedProd.profitEarned
-             };
-
-            
-             addDoc(collectionRef, Products).then(()=>{
-                 alert("Added transaction successfully");
-                 ClearAll();
-                 navigation.navigate('Home')
-             }).catch((err)=>{
-                 console.log(err);
-             })
-         }
-    }
+        }else{
+            let newQty = selectedProd.quantity - updateQuantity;
+            if(newQty < 0){
+                alert('Quantity cannot be less than 0')
+                newQty = selectedProd.quantity
+            } else{
+                console.log(newQty);
+    
+                // selectedProd.quantity = update;
+        
+                let newProfitEarned = selectedProd.profitEarned + (updateQuantity * selectedProd.productProfit);
+                const collectionRef=doc(db,"productss", selectedProd.id);
+    
+                await updateDoc(collectionRef, {
+                    quantity:newQty,
+                    profitEarned:newProfitEarned
+                }    )
+    
+                  alert("Added transaction successfully");
+                  if(newQty == 0){
+                    alert('You need to delete this product')
+                    await deleteDoc(doc(db, "productss", selectedProd.id));
+                  }
+                     navigation.navigate('Home')
+            }
+        }
+    } 
 
     return (
         <View style={styles.container}>
@@ -64,7 +66,7 @@ const UpdateProduct = ({route, navigation }) => {
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginBottom: 10, marginTop: 10}}>
             <TouchableOpacity
-                onPress={addProduct}
+                onPress={calProfitEarned}
                 style={styles.button}>
                 <Text style={{fontWeight: 'bold', fontSize: 16, color: '#4F4F4F'}}>Update Product</Text>
             </TouchableOpacity>

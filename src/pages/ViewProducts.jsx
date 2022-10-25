@@ -14,29 +14,32 @@ const ViewProduct = ({route, navigation }) => {
     <SafeAreaView style={{backgroundColor: '#fff'}}>
         <View style={styles.container}>
             <View>
+                <View>
+                    <Text>R {selectedProd.profitEarned}  /  R {selectedProd.bulkProfit}</Text>
+                </View>
                 <View style={{backgroundColor: '#A09999', height: 42, width: 321}}>
-                    <Text style={{color: '#fff', fontSize: 24, marginLeft: 10}}>Banana Large</Text>
+                    <Text style={{color: '#fff', fontSize: 24, marginLeft: 10}}>{selectedProd.productName}</Text>
                 </View>
                 <View style={{backgroundColor: '#D6F8FF', height: 181, width: 321}}>
                     <Text style={{color: '#191919', fontSize: 12}}>{selectedProd.desc}</Text>
-                    <Text style={{color: '#191919', fontSize: 12}}>100 units</Text>
+                    <Text style={{color: '#191919', fontSize: 12}}>{selectedProd.quantity}</Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#9FD1FF', height: 44, width: 321}}>
                     <View>
-                    <Text style={{color: '#191919', fontSize: 12, marginRight: 70}}>Cost/Single: 20</Text>
+                    <Text style={{color: '#191919', fontSize: 12, marginRight: 70}}>Cost/Single: {selectedProd.sellingPrice}</Text>
                     </View>
                     <View>
-                    <Text style={{color: '#191919', fontSize: 12, marginLeft: 70}}>Cost/Bulk: 120</Text>
+                    <Text style={{color: '#191919', fontSize: 12, marginLeft: 70}}>Cost/Bulk: {selectedProd.costPerBulk}</Text>
                     </View>
                 </View>
                 <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                     <View style={{backgroundColor: '#B4C9FF', height: 129, width: 163}}>
                     <Text style={{color: '#191919', fontSize: 14, alignSelf: 'center'}}>Quantity</Text>
-                    <Text style={{color: '#191919', fontSize: 76, alignSelf: 'center'}}>15</Text>
+                    <Text style={{color: '#191919', fontSize: 76, alignSelf: 'center'}}>{selectedProd.quantity}</Text>
                     </View>
                     <View style={{backgroundColor: '#E6DBFF', height: 129, width: 158}}>
-                    <Text style={{color: '#191919', fontSize: 14, alignSelf: 'center'}}>Price</Text>
-                    <Text style={{color: '#191919', fontSize: 48, alignSelf: 'center'}}>2.5</Text>
+                    <Text style={{color: '#191919', fontSize: 14, alignSelf: 'center'}}>Selling Price</Text>
+                    <Text style={{color: '#191919', fontSize: 48, alignSelf: 'center'}}>{selectedProd.sellingPrice}</Text>
                     </View>
                 </View>
             </View>
