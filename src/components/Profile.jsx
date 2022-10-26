@@ -4,50 +4,9 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { auth, db } from '../config/firebase';
 import { signOut } from 'firebase/auth';
 import { getDocs, collection, query, where } from 'firebase/firestore';
-import * as ImagePicker from 'expo-image-picker';
-import {getStorage, ref, uploadBytes,getDownloadURL} from 'firebase/storage'
+
 
 const ProfileScreen = ({navigation }) => {
-
-      //upload image to storage firebase
-  useEffect (() =>{
-    (async()=>{
-      if (Platform.OS !== 'web'){
-        const {status } = await ImagePicker.requestCameraPermissionsAsync();
-        if(status !== 'granted'){
-          alert('sorry we need camera permission to make this work')
-        }
-      }
-    })();
-    },[]);
-    const pickImage = async ()=>{
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4,3],
-        quality: 1,
-      });
-      if(!result.cancelled){
-    const storage = getStorage();
-    const ref_con = ref(storage,'image.jpg');
-    const ref_ = ref(storage, new Date().toISOString())
-    const img = await fetch(result.uri);
-    const bytes = await img.blob()
-    await uploadBytes (ref_,bytes)
-   alert("succesfully added")
-      }
-    }
-    // fetching image from cloud firestore
-    useEffect(()=>{
-      const func = async () =>{
-        const storage = getStorage();
-        const reference = ref(storage,'/2022-10-25T07:56:25.195Z');
-        await getDownloadURL(reference).then((x)=>{
-          setUrl(x)
-        })
-      }
-     if (url == undefined) {func()};
-    },[])
   //states for user email
   const [email, setEmail] = useState('');
 
@@ -99,8 +58,7 @@ const ProfileScreen = ({navigation }) => {
                 </View> */}
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
-                        {/* <Image source={require("../../assets/splash.webp")} style={styles.image} ></Image> */}
-                        <Image source={{uri:url}} style={styles.image} />
+                        <Image source={require("../../assets/splash.webp")} style={styles.image} ></Image>
                     </View>
                     {/* <View style={styles.active}></View> */}
                     <TouchableOpacity>
