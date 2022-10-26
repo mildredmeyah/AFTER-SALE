@@ -43,6 +43,9 @@ const UpdateProduct = ({route, navigation }) => {
                 }    )
     
                   alert("Added transaction successfully");
+                  if(newQty < 15){
+                    alert('You have only '+ newQty + ' ' + selectedProd.productName + ' left. You need to buy and create a new product of ' + selectedProd.productName)
+                  }
                   if(newQty == 0){
                     alert('You need to delete this product')
                     await deleteDoc(doc(db, "productss", selectedProd.id));

@@ -52,7 +52,7 @@ const AddProduct = () => {
         profitProduct = profitPerProduct
     }
 
-    const addProduct = async () => {
+    const addProduct =  () => {
         if (productName === '') {
             alert("Please insert a product name");
             //don't allow
@@ -71,7 +71,7 @@ const AddProduct = () => {
                         alert("Please insert a percentage");
                         //don't allow
                     } else {
-                        await calcSellingPrice(percentage, costPerBulk, quantity);
+                         calcSellingPrice(percentage, costPerBulk, quantity);
                         const collectionRef = collection(db, "productss");
 
                         const Products = {
@@ -88,7 +88,6 @@ const AddProduct = () => {
 
                         addDoc(collectionRef, Products).then(() => {
                             alert("Added transaction successfully");
-                            ClearAll();
                             navigation.navigate('Home')
                         }).catch((err) => {
                             console.log(err);

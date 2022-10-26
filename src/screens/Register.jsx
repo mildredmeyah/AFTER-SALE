@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity  } from 'react-native';
-import Header from '../components/Header';
-import { auth } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection, addDoc } from "firebase/firestore";
 
 const Register = ({navigation}) => {
     //states for error
@@ -12,9 +12,15 @@ const Register = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [contact, setContact] = useState('');
+    const [bio] = useState('');
+
 
     //function to register new user with email and password
     const registerWithEmail = async() => {
+        console.log(email);
         //check if inputs are empty
         if (email === '') {
             //email empty
@@ -37,7 +43,21 @@ const Register = ({navigation}) => {
                         await createUserWithEmailAndPassword(auth, email, password).then(
                             userCridential => {
                                 setErrMsg('');
-                                navigation.navigate('Home');
+                                const collectionRef = collection(db, "profiles");
+                                const profile = {
+                                  name: name,
+                                  address: address,
+                                  email: email,
+                                  bio: bio,
+                                  contact: contact,
+                                };
+        
+                                addDoc(collectionRef, profile).then(() => {
+                                    alert("Registered successfully");
+                                    navigation.navigate('Home')
+                                }).catch((err) => {
+                                    console.log(err);
+                                })
                             }
                         ).catch(
                             err => {
@@ -53,14 +73,23 @@ const Register = ({navigation}) => {
     <View style={{backgroundColor:"white",height:1000,}}>
     <View style={styles.container}>
         <View style={styles.content}>
-        <Header title='Register' />
+        <View><Text style={styles.head}>Register</Text></View>
         {errMsg !== '' ? (<View><Text style={styles.badErr}>{errMsg}</Text></View>) : (<View><Text style={styles.goodErr}></Text></View>) }
         <View >
             <View>
-                <TextInput style={styles.input} onChangeText={value => setEmail(value)}  placeholder='Email' />
+                <TextInput style={styles.input} onChangeText={value => setEmail(value)}  placeholder='Enter Email' />
             </View>
             <View>
-                <TextInput style={styles.input}  onChangeText={value => setPassword(value)}  secureTextEntry placeholder='Password' />
+                <TextInput style={styles.input} onChangeText={value => Number(setContact(value))}  placeholder='Enter Your constact number' />
+            </View>
+            <View>
+                <TextInput style={styles.input} onChangeText={value => setName(value)}  placeholder='Enter Name' />
+            </View>
+            <View>
+                <TextInput style={styles.input} onChangeText={value => setAddress(value)}  placeholder='Enter your shop Address' />
+            </View>
+            <View>
+                <TextInput style={styles.input}  onChangeText={value => setPassword(value)}  secureTextEntry placeholder='Enter Password' />
             </View>
             <View>
                 <TextInput style={styles.input}  onChangeText={value => setConfirmPassword(value)}   placeholder='Confirm Password'  secureTextEntry/>
@@ -85,11 +114,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 100,
-        marginLeft: 50,
+        marginLeft: 30,
         backgroundColor: "#DFF1F3",
         height: 500,
         width: 300,
         borderRadius: 20,
+    },
+    head:{
+        fontSize: 30,
+        fontWeight: '700',
     },
     badErr: {
         backgroundColor: '#FF0000',

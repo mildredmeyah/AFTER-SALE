@@ -14,6 +14,7 @@ import AddProduct from './src/components/AddProduct';
 import ViewProducts from './src/pages/ViewProducts';
 import Home from './src/pages/Home';
 import UpdateProduct from './src/components/UpdateProduct';
+import ProfileScreen from './src/components/Profile';
 
 
 const Stack = createNativeStackNavigator();
@@ -41,12 +42,16 @@ export default function App() {
           {(props) => <AddProduct {...props} />}
         </Stack.Screen>
 
-        <Stack.Screen name='Home' options={{title:'Home'}}>
+        <Stack.Screen name='Home' options={{headerShown: false}}>
           {(props) => <Dashboard {...props} />}
         </Stack.Screen>
 
-        <Stack.Screen name='Update' options={{headerShown: true}}>
+        <Stack.Screen name='Update' options={{title:'Update'}}>
           {(props) => <UpdateProduct {...props} />}
+        </Stack.Screen>
+
+        <Stack.Screen name='Profile' options={{headerShown: true}}>
+          {(props) => <ProfileScreen {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

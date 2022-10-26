@@ -1,11 +1,22 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 
 const Header = ({title}) => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
-        <Text>{title}</Text>
-        <Text>Manage your business with better information</Text>
+      <View>
+        <Text style={styles.text}>{title}</Text>
+      </View>
+      <View style={styles.profile}>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('Profile')}
+            >
+            <Feather name="user" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -13,8 +24,21 @@ const Header = ({title}) => {
 
 const styles = StyleSheet.create({
     container:{
-        padding: 15,
+      padding: 15,
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      backgroundColor: 'lightgray'
     },
+    profile:{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    text:{
+      fontWeight: 'bold',
+      fontSize: 20,
+    }
 })
 
 export default Header

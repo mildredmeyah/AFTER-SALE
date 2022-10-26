@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, SafeAreaView  } from 'react-native';
-import Header from '../components/Header';
+// import Header from '../components/Header';
 
 import { auth } from '../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -52,7 +52,8 @@ const Login = ({navigation}) => {
   return (
     <View style={{backgroundColor:'white',height:1000,}} >
     <View style={styles.container}>
-         <Header title='Login' />
+         {/* <Header title='Login' /> */}
+         <View><Text style={styles.head}>Login</Text></View>
         <View>
             {errMsg === '' ? (<Text style={styles.goodErr}></Text>) : (<Text style={styles.badErr}>{errMsg}</Text>)}
         </View>
@@ -83,11 +84,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 100,
-        marginLeft: 50,
+        marginLeft: 30,
         backgroundColor: "#DFF1F3",
         height: 500,
         width: 300,
         borderRadius: 20,
+    },
+    head:{
+        fontSize: 30,
+        fontWeight: '700',
     },
     badErr: {
         backgroundColor: '#FF0000',

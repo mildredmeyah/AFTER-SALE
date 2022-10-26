@@ -6,7 +6,6 @@ import img1 from "../../assets/pictures/appless.jpeg"
 import img2 from '../../assets/pictures/bananas.webp';
 import { Feather } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
-import AddProduct from '../components/AddProduct';
 import { auth, db } from '../config/firebase';
 import { getDocs, doc, collection, query, where, deleteDoc } from 'firebase/firestore';
 // import RoundBtn from './antButton';
@@ -65,13 +64,8 @@ const Dashboard = ({ navigation }) => {
   )
     return (
         <View style={styles.container}>
-            <View style={styles.profile}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('ProfileScreen')}
-                    style={styles.profile}>
-                    <Feather name="user" size={16} color="white" />
-                </TouchableOpacity>
-            </View>
+            
+                <Header title='Home' />
             <br></br>
             <br></br>
             <br></br>
@@ -145,6 +139,7 @@ const styles = StyleSheet.create({
     SearchBar: {
         borderRadius: '10px',
         margin: '16px',
+        width: '105%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -205,8 +200,8 @@ const styles = StyleSheet.create({
     add: {
         content: "",
         position: 'absolute',
-        bottom: "-3px",
-        right: "-1px",
+        bottom: "10px",
+        right: "5px",
         width: "40px",
         height: "40px",
         borderRadius: "50%",
@@ -241,6 +236,7 @@ const styles = StyleSheet.create({
         shadowColor: '#171717',
         boxShadow: '4px 4px 4px 4px gray',
         margin: '16px',
+        width: 130,
         //   shadowOffset: {width: 5, height: 4},
         //   shadowOpacity: 0.2,
         //   shadowRadius: 3,
