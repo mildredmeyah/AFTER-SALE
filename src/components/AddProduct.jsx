@@ -22,6 +22,7 @@ const AddProduct = () => {
     var sellingPrice = 0
     var targetProfit = 0
     var profitProduct = 0
+    var quantSold = 0;
 
     const [visible, setVisible] = React.useState(false);
     const toggleAlert = React.useCallback(() => {
@@ -47,9 +48,9 @@ const AddProduct = () => {
 
         let profitPerProduct = (profit / quantity).toFixed(2);
         console.log('profit per product R' + profitPerProduct);
-        sellingPrice = sellPrice
-        targetProfit = profit
-        profitProduct = profitPerProduct
+        sellingPrice = Number(sellPrice)
+        targetProfit = Number(profit)
+        profitProduct = Number(profitPerProduct)
     }
 
     const addProduct =  () => {
@@ -76,13 +77,14 @@ const AddProduct = () => {
 
                         const Products = {
                             productName: productName,
-                            costPerBulk: costPerBulk,
-                            quantity: quantity,
+                            costPerBulk: Number(costPerBulk),
+                            quantity: Number(quantity),
                             sellingPrice: sellingPrice,
                             bulkProfit: targetProfit,
                             productProfit: profitProduct,
                             email: email,
-                            profitEarned: 0.00
+                            profitEarned: 0.00,
+                            quantSold: 0,
                         };
 
 

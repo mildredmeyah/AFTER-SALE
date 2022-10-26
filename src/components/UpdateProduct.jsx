@@ -31,15 +31,19 @@ const UpdateProduct = ({route, navigation }) => {
                 newQty = selectedProd.quantity
             } else{
                 console.log(newQty);
+                console.log('Check: ' +updateQuantity);
+                console.log('Check: ' +selectedProd.quantSold);
     
                 // selectedProd.quantity = update;
-        
+                
                 let newProfitEarned = selectedProd.profitEarned + (updateQuantity * selectedProd.productProfit);
+                let sold = Number(selectedProd.quantSold) + Number(updateQuantity)
                 const collectionRef=doc(db,"productss", selectedProd.id);
     
                 await updateDoc(collectionRef, {
                     quantity:newQty,
-                    profitEarned:newProfitEarned
+                    profitEarned:newProfitEarned,
+                    quantSold: sold,
                 }    )
     
                   alert("Added transaction successfully");

@@ -15,6 +15,7 @@ import ViewProducts from './src/pages/ViewProducts';
 import Home from './src/pages/Home';
 import UpdateProduct from './src/components/UpdateProduct';
 import ProfileScreen from './src/components/Profile';
+import Splash from './src/screens/Splash';
 
 
 const Stack = createNativeStackNavigator();
@@ -25,7 +26,7 @@ export default function App() {
   //function to log out the user  
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
+      <Stack.Navigator initialRouteName='Splash'>
         <Stack.Screen name='Login' options={{headerShown: false}}>
           {(props) => <Login {...props} />}
         </Stack.Screen>
@@ -53,6 +54,11 @@ export default function App() {
         <Stack.Screen name='Profile' options={{headerShown: true}}>
           {(props) => <ProfileScreen {...props} />}
         </Stack.Screen>
+
+        <Stack.Screen name='Splash' options={{headerShown: false}}>
+          {(props) => <Splash {...props} />}
+        </Stack.Screen>
+
       </Stack.Navigator>
     </NavigationContainer>
   );
