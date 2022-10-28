@@ -64,6 +64,7 @@ const ViewProduct = ({route, navigation }) => {
 }
 
 export default ViewProduct;
+
 const styles = StyleSheet.create({
   container: {
       flex: 1,

@@ -11,11 +11,14 @@ import { auth } from './src/config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import AddProduct from './src/components/AddProduct';
-import ViewProducts from './src/pages/ViewProducts';
+import ViewProduct from './src/pages/ViewProduct';
 import Home from './src/pages/Home';
 import UpdateProduct from './src/components/UpdateProduct';
 import ProfileScreen from './src/components/Profile';
 import Splash from './src/screens/Splash';
+
+import SearchIcon from '@mui/icons-material/Search';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const Stack = createNativeStackNavigator();
@@ -35,8 +38,8 @@ export default function App() {
           {(props) => <Register {...props} />}
         </Stack.Screen>
 
-        <Stack.Screen name='viewProduct' options={{headerShown: true}}>
-          {(props) => <ViewProducts {...props} />}
+        <Stack.Screen name='ViewProduct' options={{headerShown: true}}>
+          {(props) => <ViewProduct {...props} />}
         </Stack.Screen>
 
         <Stack.Screen name='AddProduct' options={{headerShown: true}}>
