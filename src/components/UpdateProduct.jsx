@@ -39,11 +39,12 @@ const UpdateProduct = ({route, navigation }) => {
                 let newProfitEarned = selectedProd.profitEarned + (updateQuantity * selectedProd.productProfit);
                 let sold = Number(selectedProd.quantSold) + Number(updateQuantity)
                 const collectionRef=doc(db,"productss", selectedProd.id);
-    
+                let totIncome = Number(selectedProd.totIncome) + Number((sold * selectedProd.sellingPrice))
                 await updateDoc(collectionRef, {
                     quantity:newQty,
                     profitEarned:newProfitEarned,
                     quantSold: sold,
+                    totIncome : totIncome
                 }    )
     
                   alert("Added transaction successfully");
@@ -52,7 +53,6 @@ const UpdateProduct = ({route, navigation }) => {
                   }
                   if(newQty == 0){
                     alert('You need to delete this product')
-                    await deleteDoc(doc(db, "productss", selectedProd.id));
                   }
                      navigation.navigate('Home')
             }

@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { SafeAreaView, FlatList, View, Text, Button,StyleSheet,TouchableOpacity } from 'react-native';
+import { SafeAreaView, FlatList, View, Text, Button,StyleSheet,TouchableOpacity, Alert } from 'react-native';
 import { auth, db } from '../config/firebase';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import { doc, deleteDoc } from "firebase/firestore";
+import { async } from '@firebase/util';
 
 const ViewProduct = ({route, navigation }) => {
   const { selectedProd } = route.params;
@@ -9,7 +10,38 @@ const ViewProduct = ({route, navigation }) => {
   useEffect(()=>{
     console.log( selectedProd);
   },[])
-   
+
+  const DeleteAlert1 = async() => {
+    alert('You have successfully deleted this product')
+    await deleteDoc(doc(db, "productss", selectedProd.id));
+    navigation.navigate('Splash')
+  }
+
+  const DeleteAlert = () => {
+    Alert.alert(
+        'Are you sure you want to delete this product?',
+
+        'If you delete it, you will not get the calculations from database',
+        [
+            {
+                text: 'Yes',
+                onPress: async() => {
+                    await deleteDoc(doc(db, "productss", selectedProd.id));
+                    alert('Your Product was deleted successfully')
+                    navigation.navigate('Home')
+                }
+            },
+            {
+                text: 'No',
+                onPress: () => {
+                    alert('You chose not to delete your product')
+                    navigation.navigate('Home')
+                }
+            }
+        ]
+    )
+    
+  }
   return (
     <SafeAreaView style={{backgroundColor: '#fff'}}>
         <View style={styles.container}>
@@ -50,12 +82,11 @@ const ViewProduct = ({route, navigation }) => {
                 style={styles.buttonEdit}>
                 <Text style={{fontWeight: 'bold', fontSize: 16, color: '#4F4F4F'}}>Edit Product</Text>
             </TouchableOpacity>
-            {/* <RoundBtn antIconName='delete' style={{backgroundColor: 'red', marginBottom: 15}} onPress={DeleteAlert} /> */}
-            {/* <TouchableOpacity
-                onPress={DeleteAlert}
+            <TouchableOpacity
+                onPress={DeleteAlert1}
                 style={styles.buttonDelete}>
-                <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fff'}}>Delete</Text>
-            </TouchableOpacity> */}
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: '#4F4F4F',}}>Delete</Text>
+            </TouchableOpacity>
             </View>
             </View>
         </View>
@@ -64,6 +95,7 @@ const ViewProduct = ({route, navigation }) => {
 }
 
 export default ViewProduct;
+
 const styles = StyleSheet.create({
   container: {
       flex: 1,
@@ -93,7 +125,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     height: 40,
     width: 100,
-    backgroundColor: '#CAC9C9',
+    backgroundColor: 'red',
     alignItems: 'center',
     textAlign: 'center',
     justifyContent: 'center',

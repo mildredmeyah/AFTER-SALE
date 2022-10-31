@@ -16,6 +16,7 @@ import Home from './src/pages/Home';
 import UpdateProduct from './src/components/UpdateProduct';
 import ProfileScreen from './src/components/Profile';
 import Splash from './src/screens/Splash';
+import Results from './src/components/Results';
 
 
 const Stack = createNativeStackNavigator();
@@ -57,6 +58,10 @@ export default function App() {
 
         <Stack.Screen name='Splash' options={{headerShown: false}}>
           {(props) => <Splash {...props} />}
+        </Stack.Screen>
+
+        <Stack.Screen name='Results' options={{headerShown: true}}>
+          {(props) => <Results {...props} />}
         </Stack.Screen>
 
       </Stack.Navigator>
