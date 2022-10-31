@@ -1,0 +1,18 @@
+0000000000000000000000000000000000000000 03b58a5c9cb838e733a9352c777f4065e10504bd paultebeila <paultebeila@gmail.com> 1666349107 +0200	initial pull
+03b58a5c9cb838e733a9352c777f4065e10504bd 1ccc7e5198060d7051d15e527f7b16b410045838 paultebeila <paultebeila@gmail.com> 1666349204 +0200	commit: Initial project
+1ccc7e5198060d7051d15e527f7b16b410045838 0000000000000000000000000000000000000000 paultebeila <paultebeila@gmail.com> 1666349290 +0200	Branch: renamed refs/heads/master to refs/heads/main
+0000000000000000000000000000000000000000 1ccc7e5198060d7051d15e527f7b16b410045838 paultebeila <paultebeila@gmail.com> 1666349290 +0200	Branch: renamed refs/heads/master to refs/heads/main
+1ccc7e5198060d7051d15e527f7b16b410045838 258e948c7dd3c4f4725931bb9feb9e1f443a82c0 paultebeila <paultebeila@gmail.com> 1666363987 +0200	commit: Back to where the project got *, but now it's working
+258e948c7dd3c4f4725931bb9feb9e1f443a82c0 3bb97bd31cb78ece1b9500b991a6735a50911e4f paultebeila <paultebeila@gmail.com> 1666611248 +0200	commit: Stuff got updated
+3bb97bd31cb78ece1b9500b991a6735a50911e4f 401902c3722d018e1126b18b5581c36ba71ab346 paultebeila <paultebeila@gmail.com> 1666611344 +0200	commit: view.jsx was deleted, unnecessary file
+401902c3722d018e1126b18b5581c36ba71ab346 bcac885cda299cbc5eddc63cf8fe7f03ce935cdd paultebeila <paultebeila@gmail.com> 1666623773 +0200	commit: Still working on it
+bcac885cda299cbc5eddc63cf8fe7f03ce935cdd b79a5f764043f5fcdeb1e74275bc444181b4f5d3 paultebeila <paultebeila@gmail.com> 1666706724 +0200	commit: Calculations updated
+b79a5f764043f5fcdeb1e74275bc444181b4f5d3 3350f975e20bc291964e30ce39ff61158a712a46 paultebeila <paultebeila@gmail.com> 1666788855 +0200	commit: Pushed shame aowa
+3350f975e20bc291964e30ce39ff61158a712a46 f7c71af9fbb50eb07fe98a701a61c64c05cb3b44 paultebeila <paultebeila@gmail.com> 1666788961 +0200	commit: Pushed shame aowa
+f7c71af9fbb50eb07fe98a701a61c64c05cb3b44 7d1c4e27db88feb23e089928fce2733caca7be00 paultebeila <paultebeila@gmail.com> 1666793944 +0200	commit: Ngikhathele shame
+7d1c4e27db88feb23e089928fce2733caca7be00 d1fde80213b99561e73c79ca6c60fbefb77f18a5 paultebeila <paultebeila@gmail.com> 1666879059 +0200	commit: Almost there
+d1fde80213b99561e73c79ca6c60fbefb77f18a5 e1a3de1d8833b443ad607f45ecd51721874abeb2 paultebeila <paultebeila@gmail.com> 1666946267 +0200	commit: Working profile pic
+e1a3de1d8833b443ad607f45ecd51721874abeb2 e3cfb84b7a04d60862f0452e28feec50fc628ac6 paultebeila <paultebeila@gmail.com> 1666946556 +0200	pull: Fast-forward
+e3cfb84b7a04d60862f0452e28feec50fc628ac6 64cb202a17fd9cec6e980bbf570f02f7436c70f8 paultebeila <paultebeila@gmail.com> 1666956082 +0200	commit: Now we're winning
+64cb202a17fd9cec6e980bbf570f02f7436c70f8 e3cfb84b7a04d60862f0452e28feec50fc628ac6 paultebeila <paultebeila@gmail.com> 1667207786 +0200	reset: moving to HEAD~
+e3cfb84b7a04d60862f0452e28feec50fc628ac6 36f2d1ca093f9af07f7118a9edace96a14c9041d paultebeila <paultebeila@gmail.com> 1667207830 +0200	reset: moving to HEAD~
