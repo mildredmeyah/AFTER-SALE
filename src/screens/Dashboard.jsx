@@ -116,9 +116,9 @@ const Dashboard = ({ navigation }) => {
                 />
             </View>
             <View style={styles.textBox}>
-                <Text>{product.productName}</Text>
-                <Text>{product.quantity}</Text>
-                <Text>Profit</Text>
+                <Text>Product Name: {product.productName}</Text>
+                <Text>Quantity Remaining: {product.quantity}</Text>
+                <Text>Profit: R{(product.profitEarned).toFixed(2)}</Text>
             </View>
         </View>
     )

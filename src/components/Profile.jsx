@@ -7,6 +7,7 @@ import { getDocs, collection, query, where } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import {getStorage, ref, uploadBytes,getDownloadURL} from 'firebase/storage'
 import { func } from "prop-types";
+import ConfirmationPopup from "./Popup";
 
 const ProfileScreen = ({navigation }) => {
     const [url, setUrl] = useState()
