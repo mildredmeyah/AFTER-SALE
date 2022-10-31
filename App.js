@@ -16,9 +16,10 @@ import Home from './src/pages/Home';
 import UpdateProduct from './src/components/UpdateProduct';
 import ProfileScreen from './src/components/Profile';
 import Splash from './src/screens/Splash';
+import Results from './src/components/Results';
 
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import SearchIcon from '@mui/icons-material/Search';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const Stack = createNativeStackNavigator();
@@ -56,6 +57,10 @@ export default function App() {
 
         <Stack.Screen name='Profile' options={{headerShown: true}}>
           {(props) => <ProfileScreen {...props} />}
+        </Stack.Screen>
+
+        <Stack.Screen name='Result' options={{headerShown: true}}>
+          {(props) => <Results {...props} />}
         </Stack.Screen>
 
         <Stack.Screen name='Splash' options={{headerShown: false}}>

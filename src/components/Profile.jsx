@@ -6,10 +6,13 @@ import { signOut } from 'firebase/auth';
 import { getDocs, collection, query, where } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import {getStorage, ref, uploadBytes,getDownloadURL} from 'firebase/storage'
+import { func } from "prop-types";
 
 const ProfileScreen = ({navigation }) => {
     const [url, setUrl] = useState()
+    const [email, setEmail] = useState('');
 
+    const [profile, setProfile] = useState({});
       //upload image to storage firebase
   useEffect (() =>{
     (async()=>{
@@ -21,6 +24,8 @@ const ProfileScreen = ({navigation }) => {
       }
     })();
     },[]);
+
+
     const pickImage = async ()=>{
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -30,29 +35,32 @@ const ProfileScreen = ({navigation }) => {
       });
       if(!result.cancelled){
     const storage = getStorage();
-    const ref_con = ref(storage,'image.jpg');
+    const ref_con = ref(storage,email + 'profilePic');
     const ref_ = ref(storage, new Date().toISOString())
     const img = await fetch(result.uri);
     const bytes = await img.blob()
-    await uploadBytes (ref_,bytes)
+    await uploadBytes (ref_con,bytes).then((snapshot) =>{
+        console.log(snapshot);
+       
+    })
    alert("succesfully added")
       }
     }
     // fetching image from cloud firestore
     useEffect(()=>{
       const func = async () =>{
+        console.log("get Profile");
         const storage = getStorage();
-        const reference = ref(storage,'/reception.jpg');
+        const reference = ref(storage,auth.currentUser.email + 'profilePic');
         await getDownloadURL(reference).then((x)=>{
+          
           setUrl(x)
         })
       }
      if (url == undefined) {func()};
     },[])
   //states for user email
-  const [email, setEmail] = useState('');
-
-  const [profile, setProfile] = useState({});
+  
   const productsCollection = collection(db, 'profiles')
 
     const getProfile = async() =>{
@@ -106,7 +114,7 @@ const ProfileScreen = ({navigation }) => {
                     {/* <View style={styles.active}></View> */}
                     <TouchableOpacity>
                     <View style={styles.add}>
-                        <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+                        <Ionicons onPress={pickImage} name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
                     </View>
                     </TouchableOpacity>
                 </View>

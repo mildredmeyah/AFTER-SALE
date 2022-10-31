@@ -4,26 +4,28 @@ import { useNavigation } from "@react-navigation/native";
 import { auth, db } from '../config/firebase';
 import { collection, addDoc } from "firebase/firestore";
 import { FancyAlert } from 'react-native-expo-fancy-alerts';
-import { ImagePicker, launchImageLibrary} from 'react-native-image-picker';
-import {getStorage, ref, uploadBytes,getDownloadURL} from 'firebase/storage';
+// import { ImagePicker, launchImageLibrary} from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const SERVER_URL = 'http://localhost:19006';
 
 const createFormData = (photo, body = {}) => {
     const data = new FormData();
-  
+
     data.append('photo', {
-      name: photo.fileName,
-      type: photo.type,
-      uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+        name: photo.fileName,
+        type: photo.type,
+        uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
     });
-  
+
     Object.keys(body).forEach((key) => {
-      data.append(key, body[key]);
+        data.append(key, body[key]);
     });
-  
+
     return data;
-  };
+};
 
 const AddProduct = () => {
     const navigation = useNavigation()
@@ -33,7 +35,8 @@ const AddProduct = () => {
     const [costPerBulk, setCostPerBulk] = useState('');
     const [percentage, setPercentage] = useState('');
     const [email] = useState(auth.currentUser.email);
-    
+    const [picture, setPicture] = useState('');
+
     const [url, setUrl] = useState()
     // const [sellingPrice,setSellingPrice] = useState(0);
     // const [targetProfit, setTargetProfit] = useState(0);
@@ -46,22 +49,22 @@ const AddProduct = () => {
 
     const [visible, setVisible] = React.useState(false);
     const toggleAlert = React.useCallback(() => {
-        calcSellingPrice(percentage,costPerBulk,quantity)
+        calcSellingPrice(percentage, costPerBulk, quantity)
         setVisible(!visible);
     }, [visible]);
 
     const onRequestClose = React.useCallback(
-        () =>{
-            
+        () => {
+
         }
     )
 
     const calcSellingPrice = (percentage, costPerBulk, quantity) => {
 
         let profit = (costPerBulk * (percentage / 100)).toFixed(2)
-        console.log('Profit: R' +profit);
+        console.log('Profit: R' + profit);
         let totalIncome = ((parseInt(costPerBulk) + parseInt(profit))).toFixed(2);
-        console.log('Total income: R' + totalIncome);
+
 
         let sellPrice = ((totalIncome / quantity)).toFixed(2);
         console.log('Selling Price: R' + sellPrice);
@@ -73,7 +76,7 @@ const AddProduct = () => {
         profitProduct = Number(profitPerProduct)
     }
 
-    const addProduct =  () => {
+    const addProduct = () => {
         if (productName === '') {
             alert("Please insert a product name");
             //don't allow
@@ -92,7 +95,8 @@ const AddProduct = () => {
                         alert("Please insert a percentage");
                         //don't allow
                     } else {
-                         calcSellingPrice(percentage, costPerBulk, quantity);
+                        calcSellingPrice(percentage, costPerBulk, quantity);
+                        console.log(picture);
                         const collectionRef = collection(db, "productss");
 
                         const Products = {
@@ -105,6 +109,9 @@ const AddProduct = () => {
                             email: email,
                             profitEarned: 0.00,
                             quantSold: 0,
+                            totIncome:0,
+                            totalIncome: 0,
+                            picture: picture,
                         };
 
 
@@ -120,46 +127,65 @@ const AddProduct = () => {
         }
     }
 
-     //upload image to storage firebase
-  useEffect (() =>{
-    (async()=>{
-      if (Platform.OS !== 'web'){
-        const {status } = await ImagePicker.requestCameraPermissionsAsync();
-        if(status !== 'granted'){
-          alert('sorry we need camera permission to make this work')
+    //upload image to storage firebase
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestCameraPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('sorry we need camera permission to make this work')
+                }
+            }
+        })();
+    }, []);
+
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.cancelled) {
+            const storage = getStorage();
+            const ref_con = ref(storage, email + productName);
+            const img = await fetch(result.uri);
+            const bytes = await img.blob()
+
+            
+
+            await uploadBytes(ref_con, bytes).then((snapshot) => {
+                setPicture(snapshot.metadata.fullPath)
+                alert("succesfully added")
+            })
+           
         }
-      }
-    })();
-    },[]);
-    const pickImage = async ()=>{
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4,3],
-        quality: 1,
-      });
-      if(!result.cancelled){
-    const storage = getStorage();
-    const ref_con = ref(storage,'image.jpg');
-    const ref_ = ref(storage, new Date().toISOString())
-    const img = await fetch(result.uri);
-    const bytes = await img.blob()
-    await uploadBytes (ref_,bytes)
-   alert("succesfully added")
-      }
     }
 
-      return (
+    useEffect(() => {
+            const func = async () =>{
+              console.log("Fetching picture for the product");
+              const storage = getStorage();
+              const reference = ref(storage,picture);
+              await getDownloadURL(reference).then((x)=>{
+                console.log(x);
+              })
+            }
+           if (url == undefined) {func()};
+    }, [])
+    return (
         <View style={styles.container}>
+
             <View>
-            <Text style={{ marginLeft: 14 }}>Enter Product Name</Text>
+                <Text style={{ marginLeft: 14 }}>Enter Product Name</Text>
                 <TextInput style={styles.TextInput}
-                    placeholder="Banana"
+                    placeholder="Please enter your product name"
                     value={productName}
                     onChangeText={(Text) => setProductName(Text)}
                     autoCapitalize="none"
                     autoCorrect={false} />
-                    <Text style={{ marginLeft: 14 }}>Enter Product Description</Text>
+                <Text style={{ marginLeft: 14 }}>Enter Product Description</Text>
                 <TextInput style={{
                     height: 90,
                     width: 200,
@@ -175,12 +201,12 @@ const AddProduct = () => {
                     borderWidth: 1,
                     borderRadius: 4,
                 }}
-                    placeholder="This is a Bulk of Large Bananas"
+                    placeholder="Please enter the discription of your product name"
                     value={productDesc}
                     onChangeText={(Text) => setProductDesc(Text)}
                     autoCapitalize="none"
                     autoCorrect={false} />
-                    <Text style={{ marginLeft: 14 }}>Enter Quantity</Text>
+                <Text style={{ marginLeft: 14 }}>Enter Quantity</Text>
                 <TextInput style={styles.TextInput}
                     placeholder="50"
                     value={quantity}
@@ -191,34 +217,38 @@ const AddProduct = () => {
                 />
                 <Text style={{ marginLeft: 14 }}>Enter cost per Bulk</Text>
                 <TextInput style={styles.TextInput}
-                    placeholder="R200"
+                    placeholder="Please enter your cost for the whole package"
                     value={costPerBulk}
                     onChangeText={(Number) => setCostPerBulk(Number)}
                     autoCapitalize="none"
                     autoCorrect={false} />
-                    <TouchableOpacity
-                    onPress={() => pickImage }
-                    style={{ marginTop: 5,
-                        marginLeft: 13,
-                        marginBottom: 8,
-                        height: 45,
-                        width: 100,
-                        backgroundColor: '#96DED1',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        borderRadius: 10}}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#fff' }}>Upload an Image</Text>
-                </TouchableOpacity>
+
                 <Text style={{ marginLeft: 14 }}>Enter % you want to earn</Text>
                 <TextInput style={styles.TextInput}
-                    placeholder="10%"
+                    placeholder="Please enter the percentage you want to gain for the product"
                     value={[percentage]}
                     onChangeText={(Number) => setPercentage(Number)}
                     autoCapitalize="none"
                     autoCorrect={false} />
             </View>
+            <TouchableOpacity
+                onPress={pickImage}
+                style={{
+                    marginTop: 5,
+                    marginLeft: 13,
+                    marginBottom: 8,
+                    height: 45,
+                    width: 100,
+                    backgroundColor: '#96DED1',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    borderRadius: 10
+                }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#fff' }}>Upload an Image</Text>
+            </TouchableOpacity>
+            <Image source={{uri:picture} }style={{height:10}}/>
             <View style={{ flex: 1, flexDirection: 'row', marginBottom: 10, marginTop: 10 }}>
                 <TouchableOpacity
                     onPress={addProduct}
@@ -270,17 +300,17 @@ const AddProduct = () => {
 
 const handleUploadPhoto = () => {
     fetch(`${SERVER_URL}/api/upload`, {
-      method: 'POST',
-      body: createFormData(photo, { userId: '123' }),
+        method: 'POST',
+        body: createFormData(photo, { userId: '123' }),
     })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log('response', response);
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-  };
+        .then((response) => response.json())
+        .then((response) => {
+            console.log('response', response);
+        })
+        .catch((error) => {
+            console.log('error', error);
+        });
+};
 
 export default AddProduct
 
