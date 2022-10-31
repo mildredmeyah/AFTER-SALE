@@ -8,8 +8,11 @@ import { FancyAlert } from 'react-native-expo-fancy-alerts';
 import * as ImagePicker from 'expo-image-picker';
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import ConfirmationPopup from "./Popup";
 
 const SERVER_URL = 'http://localhost:19006';
+
+
 
 const createFormData = (photo, body = {}) => {
     const data = new FormData();
@@ -28,6 +31,7 @@ const createFormData = (photo, body = {}) => {
 };
 
 const AddProduct = () => {
+    const [showPopup,setShowPopup] = useState(false)
     const navigation = useNavigation()
     const [productName, setProductName] = useState('');
     const [productDesc, setProductDesc] = useState('')
@@ -59,7 +63,7 @@ const AddProduct = () => {
         }
     )
 
-    const calcSellingPrice = (percentage, costPerBulk, quantity) => {
+    const calcSellingPrice = async (percentage, costPerBulk, quantity) => {
 
         let profit = (costPerBulk * (percentage / 100)).toFixed(2)
         console.log('Profit: R' + profit);
@@ -74,9 +78,19 @@ const AddProduct = () => {
         sellingPrice = Number(sellPrice)
         targetProfit = Number(profit)
         profitProduct = Number(profitPerProduct)
+
+   
     }
 
-    const addProduct = () => {
+    const viewProduct = () =>{
+        calcSellingPrice(percentage, costPerBulk, quantity).then(() =>{
+            console.log(sellingPrice);
+            setShowPopup(true)
+        })
+       
+    }
+
+    const addProductData = () => {
         if (productName === '') {
             alert("Please insert a product name");
             //don't allow
@@ -115,8 +129,10 @@ const AddProduct = () => {
                         };
 
 
+
                         addDoc(collectionRef, Products).then(() => {
                             alert("Added transaction successfully");
+                            setShowPopup(false)
                             navigation.navigate('Home')
                         }).catch((err) => {
                             console.log(err);
@@ -251,7 +267,7 @@ const AddProduct = () => {
             <Image source={{uri:picture} }style={{height:10}}/>
             <View style={{ flex: 1, flexDirection: 'row', marginBottom: 10, marginTop: 10 }}>
                 <TouchableOpacity
-                    onPress={addProduct}
+                    onPress={viewProduct}
                     style={styles.button}>
                     <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#4F4F4F' }}>Capture Product</Text>
                 </TouchableOpacity>
@@ -261,34 +277,30 @@ const AddProduct = () => {
                     <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#fff' }}>Clear Inputs</Text>
                 </TouchableOpacity>
             </View>
-
-            <FancyAlert
-                visible={visible}
-                icon={<View style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#7EE0D1',
-                    borderRadius: 50,
-                    width: '100%',
-                }}><Text>AS</Text></View>}
-                style={{ backgroundColor: 'white' }}
-
-            >
-                <Text style={styles.contentText}>Your profit will Be <span>{profitProduct}</span></Text>
-                <Text style={styles.contentText}>Your selling price per product will Be <span>{sellingPrice}</span></Text>
-
-                <View style={styles.btns}>
-                    <TouchableOpacity style={styles.btn} onPress={() => { console.log('save'); }}>
-                        <Text style={styles.btnText}>Approve</Text>
+            <ConfirmationPopup visible={showPopup}>
+                    <View>
+                        <Text>
+                            Your Selling Price Will Be: <span>{sellingPrice}</span>
+                        </Text>
+                        <Text>
+                            Your Profit for This Produc will Be: <span>{targetProfit}</span>
+                        </Text>   
+                      
+         
+                    </View>
+                    <TouchableOpacity onPress={addProductData} >
+                        <Text> Confirm</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn} >
-                        <Text style={styles.btnText}>recapture</Text>
+                    <TouchableOpacity>
+                        <Text> ReCapture</Text>
                     </TouchableOpacity>
-                </View>
-
-            </FancyAlert>
+            </ConfirmationPopup>
+            <TouchableOpacity onPress={()=>{setShowPopup(true)}}>
+                        <Text>
+                            confirm
+                        </Text>
+                    </TouchableOpacity>
+            
 
             {/* <TouchableOpacity onPress={toggleAlert}>
                 <Text>Tap me</Text>
