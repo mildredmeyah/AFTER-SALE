@@ -42,8 +42,8 @@ const AddProduct = () => {
     const [picture, setPicture] = useState('');
 
     const [url, setUrl] = useState()
-    // const [sellingPrice,setSellingPrice] = useState(0);
-    // const [targetProfit, setTargetProfit] = useState(0);
+     const [sellingPrice1,setSellingPrice] = useState(0);
+     const [targetProfit1, setTargetProfit] = useState(0);
     // const [profitProduct, setProfitProduct] = useState(0);
 
     var sellingPrice = 0
@@ -65,13 +65,16 @@ const AddProduct = () => {
 
     const calcSellingPrice = async (percentage, costPerBulk, quantity) => {
 
-        let profit = (costPerBulk * (percentage / 100)).toFixed(2)
+        let profit = (costPerBulk * (percentage / 100)).toFixed(2);
         console.log('Profit: R' + profit);
+        setTargetProfit(profit);
         let totalIncome = ((parseInt(costPerBulk) + parseInt(profit))).toFixed(2);
 
 
         let sellPrice = ((totalIncome / quantity)).toFixed(2);
         console.log('Selling Price: R' + sellPrice);
+        setSellingPrice(sellPrice);
+        console.log('Testing the usestate: '+sellingPrice1);
 
         let profitPerProduct = (profit / quantity).toFixed(2);
         console.log('profit per product R' + profitPerProduct);
@@ -280,10 +283,10 @@ const AddProduct = () => {
             <ConfirmationPopup visible={showPopup}>
                     <View>
                         <Text>
-                            Your Selling Price Will Be: <span>{sellingPrice}</span>
+                            Your Selling Price Will Be: R<span>{sellingPrice1}</span>
                         </Text>
                         <Text>
-                            Your Profit for This Produc will Be: <span>{targetProfit}</span>
+                            Your Profit for This Produc will Be: R<span>{targetProfit1}</span>
                         </Text>   
                       
          
@@ -291,15 +294,15 @@ const AddProduct = () => {
                     <TouchableOpacity onPress={addProductData} >
                         <Text> Confirm</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>setShowPopup(false)}>
                         <Text> ReCapture</Text>
                     </TouchableOpacity>
             </ConfirmationPopup>
-            <TouchableOpacity onPress={()=>{setShowPopup(true)}}>
+            {/* <TouchableOpacity onPress={()=>{setShowPopup(false)}}>
                         <Text>
                             confirm
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
             
 
             {/* <TouchableOpacity onPress={toggleAlert}>

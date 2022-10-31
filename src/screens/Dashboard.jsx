@@ -328,17 +328,12 @@ const styles = StyleSheet.create({
         paddingLeft:'10px',
         display:'flex',
         flexDirection:'row',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        margin: 10,
     },
     results:{
-        left: "340px",
-    
-        width: "45px",
-        height: "12px",
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-        display: 'flex',
+        alignSelf: 'flex-end',
+        margin: 10,
     }
 });
 
