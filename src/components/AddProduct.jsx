@@ -175,7 +175,7 @@ const AddProduct = () => {
             
 
             await uploadBytes(ref_con, bytes).then((snapshot) => {
-                setPicture(snapshot.metadata.fullPath)
+                setPicture(snapshot.metadata.name)
                 alert("succesfully added")
             })
            

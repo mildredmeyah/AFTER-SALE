@@ -57,6 +57,7 @@ const ProfileScreen = ({navigation }) => {
           
           setUrl(x)
         })
+        // console.log(url);
       }
      if (url == undefined) {func()};
     },[])
@@ -72,6 +73,7 @@ const ProfileScreen = ({navigation }) => {
     
         querySnapShots.forEach(
         (profile) => {
+            // console.log(url);
             console.log(profile.data());
         //   tmpProfile.push({...profile.data(), id: profile.id});
           tmpProfile = profile.data();
@@ -111,6 +113,7 @@ const ProfileScreen = ({navigation }) => {
                     <View style={styles.profileImage}>
                         {/* <Image source={require("../../assets/splash.webp")} style={styles.image} ></Image> */}
                         <Image source={{uri:url}} style={styles.image} />
+                        {/* {console.log(url)} */}
                     </View>
                     {/* <View style={styles.active}></View> */}
                     <TouchableOpacity>

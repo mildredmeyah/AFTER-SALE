@@ -17,15 +17,19 @@ const Dashboard = ({ navigation }) => {
     const productsCollection = collection(db, 'productss')
     const [sumQty, setSumQty] = useState(0)
     const [sumIncome, setSumIncome] = useState(0)
-    const storage = getStorage();
+    
+    const [url, setUrl] = useState();
+    const [viewImg, setViewImg] = useState('')
+    
 
     
-    const loadImg = async (product) =>{
-        const reference = ref(storage,product.data().picture);
-       await getDownloadURL(reference).then((x)=>{
-           console.log(x);
-       })
-    } 
+    // const loadImg = async (product) =>{
+    //     const reference = ref(storage,product.data().picture);
+    //    await getDownloadURL(reference).then((x)=>{
+    //        console.log(x);
+    //    })
+    // } 
+    
     const getProducts = async () => {
         const q = query(productsCollection, where('email', '==', auth.currentUser.email));
         const querySnapShots = await getDocs(q);
@@ -34,9 +38,10 @@ const Dashboard = ({ navigation }) => {
         let tmpProducts = [];
         let sumQty = 0
         let sumIncome = 0
+        let imgProduct = ""
           querySnapShots.forEach(
             (product) => {
-                 loadImg(product)
+                //  loadImg(product)
                
                 tmpProducts.push({ ...product.data(), id: product.id, image:img});
                 console.log(tmpProducts);
@@ -45,16 +50,21 @@ const Dashboard = ({ navigation }) => {
 
                 let numQty = product.data().quantity
                 sumQty = sumQty + numQty
+                let senepe = product.data().picture
+                imgProduct = senepe
 
+
+                console.log(imgProduct);
                 console.log(sumIncome);
                 console.log(sumQty);
             }
         );
-
+        setViewImg(imgProduct)
         setProducts(tmpProducts);
         setSumQty(sumQty)
         setSumIncome(sumIncome)
         // console.log(tmpProducts);
+        // console.log(url);
 
     }
     useEffect(() => {
@@ -62,10 +72,16 @@ const Dashboard = ({ navigation }) => {
         getProducts()
 
     }, [])
-    useEffect(() => {
-
-
-
+    
+    useEffect(()=>{
+        const func = async() => {
+            const storage = getStorage();
+            const reference = ref(storage, '/'+viewImg);
+            await getDownloadURL(reference).then((x) => {
+                setUrl(x)
+            })
+        }
+        func();
     }, [])
 
 
@@ -112,7 +128,7 @@ const Dashboard = ({ navigation }) => {
                         width: "100%",
                         borderRadius: '17px',
                     }}
-                    source={img1}
+                    source={{url:url}}
                 />
             </View>
             <View style={styles.textBox}>
